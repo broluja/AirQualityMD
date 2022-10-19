@@ -1,0 +1,151 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+
+#:set rail_bg_color get_color_from_hex("#fffcf4")
+#:set selected_item_bg_color get_color_from_hex('#e7e4c0')
+
+<MenuButton@MDFlatButton>
+    theme_text_color: 'Custom'
+    line_color: 1, 1, 1, .9
+    text_color: 1, 1, 1, .9
+    font_size: dp(22)
+
+
+<MainScreenView>
+    MDNavigationLayout:
+        ScreenManager:
+            MDScreen:
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    MDBoxLayout:
+                        adaptive_height: True
+                        md_bg_color: rail_bg_color
+                        padding: '12dp'
+                        MDLabel:
+                            id: clock
+                            text: ''
+                            adaptive_height: True
+                            pos_hint: {'center_y': .5}
+
+                    MDBoxLayout:
+                        MDNavigationRail:
+                            id: navigation_rail
+                            md_bg_color: rail_bg_color
+                            selected_color_background: selected_item_bg_color
+                            ripple_color_item: selected_item_bg_color
+                            on_item_release: root.switch_screen(*args)
+
+                            MDNavigationRailFabButton:
+                                icon: "chevron-left"
+                                on_release: app.manager_screen.current = 'login'
+
+                            MDNavigationRailItem:
+                                text: 'AirQuality'
+                                icon: 'air-conditioner'
+
+                            MDNavigationRailItem:
+                                text: 'Weather'
+                                icon: 'weather-partly-snowy-rainy'
+
+                        ScreenManager:
+                            id: screen_manager
+                            transition:
+                                FadeTransition(duration=.2, clearcolor=app.theme_cls.bg_dark)
+
+                            MDScreen:
+                                on_leave:
+                                    air_country.text = 'Choose Country'
+                                    air_state.text = 'Choose State'
+                                    air_state.disabled = True
+                                    air_city.text = 'Choose City'
+                                    air_city.disabled = True
+                                    air_label.clear_widgets(air_label.children)
+                                name: 'air'
+                                FitImage:
+                                    source: 'assets/images/air_quality_adjusted.jpg'
+                                    canvas.after:
+                                        Color:
+                                            rgba: 0, 0, 0, .2
+                                        Rectangle:
+                                            pos: self.pos
+                                            size: self.size
+
+                                MDBoxLayout:
+                                    id: air_label
+
+                                MDBoxLayout:
+                                    orientation: 'vertical'
+                                    padding: dp(20)
+                                    spacing: dp(20)
+                                    id: air
+                                    MenuButton:
+                                        id: air_country
+                                        text: 'Choose Country'
+                                        on_press: root.open_countries()
+                                    MenuButton:
+                                        id: air_state
+                                        text: 'Choose State'
+                                        on_press: root.open_states(root.country_menu.caller.text)
+                                        disabled: True
+                                    MenuButton:
+                                        id: air_city
+                                        text: 'Choose City'
+                                        on_press: root.open_cities()
+                                        disabled: True
+
+                                MDLabel:
+                                    text: 'AirQuality'
+                                    font_style:'H6'
+                                    color: 1, 1, 1
+                                    halign: 'center'
+                                    adaptive_height: True
+                                    halign: 'right'
+
+                            MDScreen:
+                                on_leave:
+                                    weather_country.text = 'Choose Country'
+                                    weather_state.text = 'Choose State'
+                                    weather_state.disabled = True
+                                    weather_city.text = 'Choose City'
+                                    weather_city.disabled = True
+                                    weather_label.clear_widgets(weather_label.children)
+                                name: 'weather'
+                                FitImage:
+                                    source: 'assets/images/weather.jpg'
+                                    canvas.after:
+                                        Color:
+                                            rgba: 0, 0, 0, .35
+                                        Rectangle:
+                                            pos: self.pos
+                                            size: self.size
+
+                                MDBoxLayout:
+                                    id: weather_label
+
+                                MDBoxLayout:
+                                    orientation: 'vertical'
+                                    padding: dp(20)
+                                    spacing: dp(20)
+                                    id: weather
+                                    MenuButton:
+                                        id: weather_country
+                                        text: 'Choose Country'
+                                        on_press: root.open_countries()
+                                    MenuButton:
+                                        id: weather_state
+                                        text: 'Choose State'
+                                        on_press: root.open_states(root.country_menu.caller.text)
+                                        disabled: True
+                                    MenuButton:
+                                        id: weather_city
+                                        text: 'Choose City'
+                                        on_press: root.open_cities()
+                                        disabled: True
+
+                                MDLabel:
+                                    text: 'Weather'
+                                    font_style:'H6'
+                                    color: 1, 1, 1
+                                    halign: 'center'
+                                    adaptive_height: True
+                                    halign: 'right'

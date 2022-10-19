@@ -1,0 +1,80 @@
+#: import os os
+#: import get_hex_from_color kivy.utils.get_hex_from_color
+#: set primary get_hex_from_color(app.theme_cls.primary_color)
+
+
+<CustomTextField@MDTextField>
+    write_tab: False
+    hint_text_color_normal: 1, 1, 1, .95
+    font_size: dp(50)
+    on_text_validate: root.register(name_field.text, pass_field.text, pass_field_confirmed.text)
+    required: True
+    error_color: 1, 1, 1, .95
+
+<RegisterScreenView>
+    on_leave:
+        name_field.text = ''
+        pass_field.text = ''
+        pass_field_confirmed.text = ''
+    FitImage:
+        source: 'assets/images/registration.jpg'
+        canvas.after:
+            Color:
+                rgba: 0, 0, 0, .3
+            Rectangle:
+                pos: self.pos
+                size: self.size
+    Image:
+        source: f'{os.environ["AirQuality"]}/assets/images/kivy-logo.png'
+        size_hint: None, .2
+        width: self.height
+        pos_hint: {'center_x': .5, 'center_y': .85}
+
+    MDLabel:
+        markup: True
+        font_size: dp(50)
+        color: 1, 1, 1, .9
+        text: f'AirQuality[color={primary}]App[/color]'
+        pos_hint: {'center_y': .7}
+        halign: 'center'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        size_hint_x: .5
+        pos_hint: {'center_x': .5, 'center_y': .35}
+        spacing: dp(40)
+        adaptive_height: True
+
+        CustomTextField:
+            id: name_field
+            hint_text: 'Enter your email'
+
+        CustomTextField:
+            id: pass_field
+            hint_text: 'Enter your password'
+            password: True
+            password_mask: "*"
+
+        CustomTextField:
+            id: pass_field_confirmed
+            hint_text: 'Re-type your password'
+            password: True
+            password_mask: "*"
+
+        MDRoundFlatIconButton:
+            text: 'Register'
+            theme_text_color: 'Custom'
+            line_color: 1, 1, 1, 1
+            icon_color: 1, 1, 1, 1
+            pos_hint: {'center_x': .5}
+            font_size: dp(40)
+            on_press: root.register(name_field.text, pass_field.text, pass_field_confirmed.text)
+
+        MDRoundFlatIconButton:
+            text: 'Back'
+            theme_text_color: 'Custom'
+            line_color: 1, 1, 1, 1
+            icon_color: 1, 1, 1, 1
+            pos_hint: {'center_x': .5}
+            font_size: dp(40)
+            on_press: root.manager.switch_screen('login')

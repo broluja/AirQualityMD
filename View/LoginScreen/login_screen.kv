@@ -1,0 +1,76 @@
+#: import os os
+#: import get_hex_from_color kivy.utils.get_hex_from_color
+#: set primary get_hex_from_color(app.theme_cls.primary_color)
+#: set error get_hex_from_color((74/255, 73/255, 69/255))
+
+<CustomTextField@MDTextField>
+    write_tab: False
+    hint_text_color_normal: 1, 1, 1, .95
+    font_size: dp(50)
+    font_color: 1, 1, 1, .95
+    required: True
+    error_color: error
+
+<LoginScreenView>
+    on_leave:
+        name_field.text = ''
+        pass_field.text = ''
+    FitImage:
+        source: 'assets/images/login_screen.jpg'
+        canvas.after:
+            Color:
+                rgba: 0, 0, 0, .3
+            Rectangle:
+                pos: self.pos
+                size: self.size
+    Image:
+        source: f'{os.environ["AirQuality"]}/assets/images/kivy-logo.png'
+        size_hint: None, .2
+        width: self.height
+        pos_hint: {'center_x': .5, 'center_y': .85}
+
+    MDLabel:
+        markup: True
+        font_size: dp(50)
+        color: 1, 1, 1, .9
+        text: f'AirQuality[color={primary}]App[/color]'
+        pos_hint: {'center_y': .7}
+        halign: 'center'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        size_hint_x: .5
+        pos_hint: {'center_x': .5, 'center_y': .35}
+        spacing: dp(40)
+        adaptive_height: True
+
+        CustomTextField:
+            id: name_field
+            hint_text: 'Enter your email'
+            on_text_validate: root.login(name_field.text, pass_field.text)
+
+        CustomTextField:
+            id: pass_field
+            hint_text: 'Enter your password'
+            password: True
+            password_mask: "*"
+            on_text_validate: root.login(name_field.text, pass_field.text)
+
+        MDRoundFlatIconButton:
+            icon: 'send'
+            text: ' Login '
+            theme_text_color: 'Custom'
+            line_color: 1, 1, 1, .9
+            icon_color: 1, 1, 1, .9
+            pos_hint: {'center_x': .5}
+            font_size: dp(40)
+            on_press: root.login(name_field.text, pass_field.text)
+
+        MDLabel:
+            markup: True
+            font_size: dp(22)
+            text: f'Click [ref=<str>]here to[color={primary}] Register[/color][/ref]'
+            pos_hint: {'center_y': .65}
+            halign: 'center'
+            color: 1, 1, 1, .9
+            on_ref_press: app.manager_screen.switch_screen('register')
