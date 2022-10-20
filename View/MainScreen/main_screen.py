@@ -35,7 +35,7 @@ class MainScreenView(MDScreen):
     def countries(self):
         try:
             return {country[:5].upper(): country for country in self.api_manager.get_countries()}
-        except APIException as ex:
+        except APIException(user_message='Our service is unavailable at the moment. Please try again later.') as ex:
             self.notifier.notify(ex.user_error_message)
             return {}
 
