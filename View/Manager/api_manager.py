@@ -1,6 +1,7 @@
 import requests
 
-from Controller.config import key, supported_countries, states_in_country, cities_in_state, spec_city_data
+from Controller.config import (
+    key, supported_countries, states_in_country, cities_in_state, spec_city_data, city_data_IP)
 from Controller.exceptions import *
 
 
@@ -28,10 +29,11 @@ class APIManager:
         """
         url = supported_countries.format(KEY=self.key)
         data = requests.get(url).json()
-        if data.get('status') == 'success':
-            return [list(country.values())[0] for country in data.get('data')]
-        else:
+        if data.get('status') != 'success':
             raise self.statuses.get(data['data']['message'], APIException)
+        countries = [list(country.values())[0] for country in data.get('data')]
+        countries.insert(0, 'Serbia')
+        return countries
 
     def get_states(self, country):
         """
