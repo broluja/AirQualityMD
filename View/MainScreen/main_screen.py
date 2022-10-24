@@ -181,3 +181,20 @@ class MainScreenView(MDScreen):
         label = APPLabel('moderate')
         label.text = text
         self.ids.weather_label.add_widget(label)
+
+    def my_city_data(self):
+        try:
+            if not self.ids.my_city.children:
+                data = self.api_manager.get_nearest_city()
+                label_text = f"Home city: {data['city']}\nState: {data['state']} and Country: {data['country']}\n" \
+                             f"Current Air Quality: AQI - {data['current']['pollution']['aqius']}, " \
+                             f"Pollutant: {data['current']['pollution']['mainus']}\nCurrent Weather Data: \n  " \
+                             f"Temperature - {data['current']['weather']['tp']} \u00B0C \n  Atmospheric " \
+                             f"Pressure: {data['current']['weather']['pr']} \n  " \
+                             f"Humidity: {data['current']['weather']['hu']} hPa \n  " \
+                             f"Wind Speed: {data['current']['weather']['ws']} m/s"
+                label = APPLabel('home_city')
+                label.text = label_text
+                self.ids.my_city.add_widget(label)
+        except APIException as ex:
+            self.notifier.notify(ex.user_error_message)

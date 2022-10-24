@@ -14,7 +14,9 @@ class APIManager:
         'Ip Location Failed': IpLocationFailedException,
         'No Nearest Station': NoNearestLocationException,
         'Feature Not Available': FeatureNotAvailableException,
-        'Too Many Requests': TooManyRequestsException
+        'Too Many Requests': TooManyRequestsException,
+        'Forbidden': ForbiddenException,
+        "permission_denied (you don't have access to this endpoint": PermissionDeniedException
     }
 
     def __init__(self):
@@ -82,3 +84,16 @@ class APIManager:
             return data['data']['current']
         else:
             raise self.statuses.get(data['data']['message'], APIException)
+
+    def get_nearest_city(self):
+        """
+        Getting data for the nearest city in your location.
+        Returns:
+            dictionary: data for the nearest city
+        """
+        url = city_data_IP.format(KEY=self.key)
+        data = requests.get(url).json()
+        if data.get('status') == 'success':
+            return data['data']
+        else:
+            raise self.statuses.get(data['data']['message'])

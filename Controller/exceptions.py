@@ -102,6 +102,20 @@ class TooManyRequestsException(APIException):
     status = 'API Error - 10 calls limit reached.'
 
 
+class ForbiddenException(APIException):  # Level 2 exception
+    """Returned when API key is forbidden."""
+    internal_error_message = 'API error occurred. Access to data failed.'
+    user_error_message = 'Sorry, your API key is invalid.'
+    status = 'API Error - forbidden.'
+
+
+class PermissionDeniedException(APIException):
+    """Returned when endpoint is forbidden."""
+    internal_error_message = 'API error occurred. Endpoint is forbidden.'
+    user_error_message = 'Sorry, this endpoint is forbidden.'
+    status = 'API Error - invalid endpoint.'
+
+
 class DataBaseException(BaseAPPException):  # Level 2 exception
     """Database general exception"""
     internal_error_message = 'Database error occurred.'

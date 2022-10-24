@@ -41,6 +41,9 @@ class APPLabel(MDLabel):
     }
 
     def __init__(self, aqi=None, **kwargs):
-        super(APPLabel, self).__init__(**kwargs)
         if aqi is not None:
             self.text_color = self.colors.get(aqi)
+        if aqi == 'home_city':
+            self.halign = 'left'
+            self.text_color = (253/255, 217/255, 41/255, 1)
+        super(APPLabel, self).__init__(**kwargs)
