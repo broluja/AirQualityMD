@@ -11,7 +11,7 @@ class UserManager:
         self.email = None
         self.password = None
 
-    def register_user(self, email: str, password: str, password_confirmed: str):
+    def register_user(self, email: str, password: str, password_confirmed: str) -> None:
         """
         Args:
             email (str): string value, user`s email.
@@ -40,7 +40,7 @@ class UserManager:
         hashed_password = get_password_hash(password)
         user_repository.create({'email': email, 'hashed_password': hashed_password})
 
-    def login_user(self, email: str, password: str):
+    def login_user(self, email: str, password: str) -> None:
         """
         Args:
             email (str): string value, user`s email.

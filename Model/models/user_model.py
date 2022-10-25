@@ -15,5 +15,5 @@ class User(Base):
     email = Column(String)
     hashed_password = Column(String)
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {'id': self.id, 'email': self.email}

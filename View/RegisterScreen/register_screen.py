@@ -1,7 +1,7 @@
 from kivymd.uix.screen import MDScreen
 
 from View.Manager.user_manager import UserManager
-from View.Manager.notification_manager import NotificationManager
+from View.Manager.notification_manager import notification_manager
 from Controller.exceptions import DataBaseException
 
 
@@ -10,7 +10,7 @@ class RegisterScreenView(MDScreen):
     def __init__(self, **kwargs):
         super(RegisterScreenView, self).__init__(**kwargs)
         self.user = UserManager()
-        self.notification_manager = NotificationManager()
+        self.notification_manager = notification_manager
 
     def register(self, email: str, password: str, password_confirmed: str) -> None:
         """

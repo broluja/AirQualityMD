@@ -11,7 +11,7 @@ class NotificationManager(object):
         return f'Notification Manager for {self.app}'
 
     @staticmethod
-    def notify(text, duration=4, background=None):
+    def notify(text: str, duration=4, background=None) -> None:
         toast(text=text, duration=duration, background=background)
 
 

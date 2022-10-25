@@ -144,7 +144,7 @@ class WrongPasswordException(LoginException):  # Level 4 exception
     status = 'Database Error - password failure.'
 
 
-class UserDoNotExistException(LoginException):
+class UserDoNotExistException(LoginException):  # Level 4 exception
     """User with this email does not exist."""
     internal_error_message = 'Login error occurred. User with this email does nt exist.'
     user_error_message = 'User with this email does not exist.'

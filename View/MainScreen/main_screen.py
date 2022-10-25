@@ -40,12 +40,21 @@ class MainScreenView(MDScreen):
             self.notifier.notify(ex.user_error_message)
             return {}
 
-    def switch_screen(self, navigation_rail, navigation_rail_item):
+    def switch_screen(self, navigation_rail, navigation_rail_item) -> None:
+        """
+        Switching screens on navigation rail
+        Args:
+            navigation_rail: navigation rail object
+            navigation_rail_item: navigation item object
+
+        Returns:
+            None.
+        """
         name_screen = navigation_rail_item.icon.split("-")[0].lower()
         if name_screen in self.ids.screen_manager.screen_names:
             self.ids.screen_manager.current = name_screen
 
-    def on_enter(self):
+    def on_enter(self) -> None:
         navigation_rail_items = self.ids.navigation_rail.get_items()[:]
         navigation_rail_items.reverse()
 
@@ -54,11 +63,24 @@ class MainScreenView(MDScreen):
             screen = MDScreen(name=name_screen, radius=[18, 0, 0, 0])
             self.ids.screen_manager.add_widget(screen)
 
-    def get_clock(self, widget):
+    def get_clock(self, widget: object) -> None:
+        """
+        Displaying current time (hour:minute form)
+        Args:
+            widget: clock object
+
+        Returns:
+            None.
+        """
         current_time = datetime.now()
         self.ids.clock.text = current_time.strftime('%H:%M')
 
-    def open_countries(self):
+    def open_countries(self) -> None:
+        """
+        Getting countries and saving them on class attribute.
+        Returns:
+            None.
+        """
         if not self.country_list:
             items = self.countries.items()
             if not items:  # Exception is raised in property getter
@@ -78,8 +100,16 @@ class MainScreenView(MDScreen):
         self.country_menu.items = self.country_list
         self.country_menu.open()
 
-    def country_callback(self, country):
-        self.country_menu.caller.text = str(country)
+    def country_callback(self, country: str) -> None:
+        """
+        Callback on selecting a country
+        Args:
+            country: string representing a chosen country
+
+        Returns:
+            None.
+        """
+        self.country_menu.caller.text = country
         try:
             self.state_list = self.api_manager.get_states(country=country)
         except APIException as ex:
@@ -90,7 +120,15 @@ class MainScreenView(MDScreen):
         else:
             self.ids.weather_state.disabled = False
 
-    def open_states(self, country):
+    def open_states(self, country: str) -> None:
+        """
+        Getting states from a chosen country.
+        Args:
+            country: string representing a chosen country
+
+        Returns:
+            None.
+        """
         items = [
             {'viewclass': 'OneLineListItem',
              'text': f'{state}',
@@ -105,8 +143,17 @@ class MainScreenView(MDScreen):
         self.states_menu.items = items
         self.states_menu.open()
 
-    def state_callback(self, country, state):
-        self.states_menu.caller.text = str(state)
+    def state_callback(self, country: str, state: str) -> None:
+        """
+        Callback on selecting a state
+        Args:
+            country: string representing a chosen country
+            state: string representing a chosen state
+
+        Returns:
+            None.
+        """
+        self.states_menu.caller.text = state
         try:
             self.city_list = self.api_manager.get_cities(country, state)
         except APIException as ex:
@@ -118,7 +165,13 @@ class MainScreenView(MDScreen):
             self.ids.weather_city.disabled = False
         self.states_menu.dismiss()
 
-    def open_cities(self):
+    def open_cities(self) -> None:
+        """
+        Getting cities from a chosen state and country.
+
+        Returns:
+            None.
+        """
         state = self.states_menu.caller.text
         country = self.country_menu.caller.text
         items = [
@@ -135,8 +188,18 @@ class MainScreenView(MDScreen):
         self.cities_menu.items = items
         self.cities_menu.open()
 
-    def city_callback(self, city, country, state):
-        self.cities_menu.caller.text = str(city)
+    def city_callback(self, city: str, country: str, state: str) -> None:
+        """
+        Callback on selecting a state
+        Args:
+            country: string representing a chosen country
+            state: string representing a chosen state
+            city: string representing a chosen city
+
+        Returns:
+            None.
+        """
+        self.cities_menu.caller.text = city
         try:
             data = self.api_manager.get_city_data(city, state, country)
         except APIException as ex:
@@ -150,7 +213,15 @@ class MainScreenView(MDScreen):
         else:
             self.show_weather(data['weather'])
 
-    def show_air_quality(self, data):
+    def show_air_quality(self, data: dict) -> None:
+        """
+        Getting air quality data for chosen country, state and city
+        Args:
+            data: data for city (dictionary object)
+
+        Returns:
+            None.
+        """
         self.ids.air_label.clear_widgets(self.ids.air_label.children)
         try:
             aqi = data['aqius']  # AQI value based on US EPA standard
@@ -163,7 +234,15 @@ class MainScreenView(MDScreen):
         label.text = f'Air quality is {category}\nAQI level: {aqi} - Main pollutant: {pollutant}'
         self.ids.air_label.add_widget(label)
 
-    def show_weather(self, data):
+    def show_weather(self, data: dict) -> None:
+        """
+        Getting weather data for chosen country, state and city
+        Args:
+            data: data for city (dictionary object)
+
+        Returns:
+            None.
+        """
         self.ids.weather_label.clear_widgets(self.ids.weather_label.children)
         try:
             temperature = data['tp']  # temperature in Celsius
@@ -183,7 +262,12 @@ class MainScreenView(MDScreen):
         label.text = text
         self.ids.weather_label.add_widget(label)
 
-    def my_city_data(self):
+    def my_city_data(self) -> None:
+        """
+        Getting data for the nearest city
+        Returns:
+            None.
+        """
         try:
             if not self.ids.my_city.children:
                 data = self.api_manager.get_nearest_city()

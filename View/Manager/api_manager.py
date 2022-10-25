@@ -1,7 +1,7 @@
 import requests
 
 from Controller.config import (
-    key, supported_countries, states_in_country, cities_in_state, spec_city_data, city_data_IP, city_data_GPS)
+    key, supported_countries, states_in_country, cities_in_state, spec_city_data, city_data_IP)
 from Controller.exceptions import *
 
 
@@ -22,7 +22,7 @@ class APIManager:
     def __init__(self):
         self.key = key
 
-    def get_countries(self):
+    def get_countries(self) -> list:
         """
         Getting the list of available countries
 
@@ -37,7 +37,7 @@ class APIManager:
         countries.insert(0, 'Serbia')
         return countries
 
-    def get_states(self, country):
+    def get_states(self, country: str) -> list:
         """
         Getting the list of states within given country.
         Args:
@@ -52,7 +52,7 @@ class APIManager:
         else:
             raise self.statuses.get(data['data']['message'], APIException)
 
-    def get_cities(self, country, state):
+    def get_cities(self, country: str, state: str) -> list:
         """
         Getting the list of cities within a given country and state
         Args:
@@ -68,7 +68,7 @@ class APIManager:
         else:
             raise self.statuses.get(data['data']['message'], APIException)
 
-    def get_city_data(self, city, state, country):
+    def get_city_data(self, city: str, state: str, country: str) -> dict:
         """
         Getting the data for given city in a country and state
         Args:
@@ -85,7 +85,7 @@ class APIManager:
         else:
             raise self.statuses.get(data['data']['message'], APIException)
 
-    def get_nearest_city(self):
+    def get_nearest_city(self) -> dict:
         """
         Getting data for the nearest city in your location.
         Returns:

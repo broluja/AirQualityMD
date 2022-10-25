@@ -23,11 +23,11 @@ class LoginScreenView(MDScreen):
         Returns:
             None.
         """
-        # try:
-        #     self.user.login_user(email, password)
-        # except DataBaseException as ex:
-        #     ex.to_log()
-        #     self.notification_manager.notify(ex.user_error_message)
-        # else:
-        #     self.notification_manager.notify('Successfully logged IN.')
-        self.manager.switch_screen('main')
+        try:
+            self.user.login_user(email, password)
+        except DataBaseException as ex:
+            ex.to_log()
+            self.notification_manager.notify(ex.user_error_message)
+        else:
+            self.notification_manager.notify('Successfully logged IN.')
+            self.manager.switch_screen('main')
