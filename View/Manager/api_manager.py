@@ -1,7 +1,7 @@
 import requests
 
 from Controller.config import (
-    key, supported_countries, states_in_country, cities_in_state, spec_city_data, city_data_IP)
+    key, supported_countries, states_in_country, cities_in_state, spec_city_data, city_data_IP, city_data_GPS)
 from Controller.exceptions import *
 
 

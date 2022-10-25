@@ -3,7 +3,7 @@ from datetime import datetime
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.menu import MDDropdownMenu
 from kivy.clock import Clock
-from kivy.properties import ObjectProperty, ListProperty, DictProperty
+from kivy.properties import ObjectProperty, ListProperty, DictProperty, StringProperty
 
 from View.Manager.api_manager import APIManager
 from View.Manager.notification_manager import notification_manager
@@ -20,6 +20,7 @@ class MainScreenView(MDScreen):
     state_list = ListProperty()
     city_list = ListProperty()
     city_data = DictProperty()
+    hometown = StringProperty()
 
     def __init__(self, **kwargs):
         super(MainScreenView, self).__init__(**kwargs)
@@ -186,14 +187,16 @@ class MainScreenView(MDScreen):
         try:
             if not self.ids.my_city.children:
                 data = self.api_manager.get_nearest_city()
-                label_text = f"Home city: {data['city']}\nState: {data['state']} and Country: {data['country']}\n" \
-                             f"Current Air Quality: AQI - {data['current']['pollution']['aqius']}, " \
-                             f"Pollutant: {data['current']['pollution']['mainus']}\nCurrent Weather Data: \n  " \
-                             f"Temperature - {data['current']['weather']['tp']} \u00B0C \n  Atmospheric " \
-                             f"Pressure: {data['current']['weather']['pr']} \n  " \
-                             f"Humidity: {data['current']['weather']['hu']} hPa \n  " \
+                self.hometown = data['city']
+                aqi_value = get_aqi_category(data['current']['pollution']['aqius'])
+                label_text = f"Home city: {data['city']}\nCountry: {data['country']}, State: {data['state']}\n\n" \
+                             f"Current Air Quality: \n    AQI - {data['current']['pollution']['aqius']}, " \
+                             f"Pollutant: {data['current']['pollution']['mainus']}\n\nCurrent Weather Data: \n    " \
+                             f"Temperature - {data['current']['weather']['tp']} \u00B0C \n    Atmospheric " \
+                             f"Pressure: {data['current']['weather']['pr']} hPa\n    " \
+                             f"Humidity: {data['current']['weather']['hu']}% \n    " \
                              f"Wind Speed: {data['current']['weather']['ws']} m/s"
-                label = APPLabel('home_city')
+                label = APPLabel(aqi=aqi_value, hometown=True)
                 label.text = label_text
                 self.ids.my_city.add_widget(label)
         except APIException as ex:

@@ -159,7 +159,7 @@
                                 on_enter: root.my_city_data()
                                 name: 'home'
                                 FitImage:
-                                    source: 'assets/images/weather.jpg'
+                                    source: 'assets/images/my_city.jpg'
                                     canvas.after:
                                         Color:
                                             rgba: 0, 0, 0, .35
@@ -169,3 +169,11 @@
                                 MDBoxLayout:
                                     id: my_city
                                     padding: dp(33)
+
+                                MDLabel:
+                                    text: root.hometown
+                                    font_style:'H6'
+                                    color: 1, 1, 1
+                                    halign: 'center'
+                                    adaptive_height: True
+                                    halign: 'right'
