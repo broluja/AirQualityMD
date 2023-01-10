@@ -276,7 +276,7 @@ class MainScreenView(MDScreen):
                 label_text = f"Home city: {data['city']}\nCountry: {data['country']}, State: {data['state']}\n\n" \
                              f"Current Air Quality: \n    AQI - {data['current']['pollution']['aqius']}, " \
                              f"Pollutant: {data['current']['pollution']['mainus']}\n\nCurrent Weather Data: \n    " \
-                             f"Temperature - {data['current']['weather']['tp']} \u00B0C \n    Atmospheric " \
+                             f"Temperature: {data['current']['weather']['tp']} \u00B0C \n    Atmospheric " \
                              f"Pressure: {data['current']['weather']['pr']} hPa\n    " \
                              f"Humidity: {data['current']['weather']['hu']}% \n    " \
                              f"Wind Speed: {data['current']['weather']['ws']} m/s"

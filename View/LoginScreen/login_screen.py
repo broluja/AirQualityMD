@@ -6,7 +6,7 @@ from Controller.exceptions import DataBaseException
 
 
 class LoginScreenView(MDScreen):
-    """Screen used for logging in APP."""
+    """Screen used for logging in the APP."""
     def __init__(self, **kwargs):
         super(LoginScreenView, self).__init__(**kwargs)
         self.user = UserManager()
